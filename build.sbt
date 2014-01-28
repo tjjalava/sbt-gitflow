@@ -22,21 +22,22 @@ publishArtifact in Test := false
 pomIncludeRepository := { x => false }
 
 libraryDependencies += sbtPluginExtra(
-  m = "com.github.gseitz" % "sbt-release" % "0.6", // Plugin module name and version
-  sbtV = "0.12",    // SBT version
-  scalaV = "2.9.2"    // Scala version compiled the plugin
+  m = "com.github.gseitz" % "sbt-release" % "0.8", // Plugin module name and version
+  sbtV = "0.13.0",    // SBT version
+  scalaV = "2.10"    // Scala version compiled the plugin
 )
 
+credentials += Credentials(Path.userHome / ".m2" / "nexus-credentials")
+
 publishTo <<= version { (v: String) =>
-  val nexus = "https://oss.sonatype.org/"
+  val nexus = "http://repository.ba-group.fi/"
   if (v.trim.endsWith("SNAPSHOT"))
-    Some("sonatype-snapshots" at nexus + "content/repositories/snapshots")
+    Some("snapshots" at nexus + "content/repositories/snapshots/")
   else
-    Some("sonatype-releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("snapshots" at nexus + "content/repositories/releases/")
 }
 
-pomExtra := (
-  <url>https://github.com/sritchie/sbt-gitflow</url>
+pomExtra := <url>https://github.com/sritchie/sbt-gitflow</url>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -55,4 +56,4 @@ pomExtra := (
       <name>Sam Ritchie</name>
       <url>http://twitter.com/sritchie</url>
     </developer>
-  </developers>)
+  </developers>
